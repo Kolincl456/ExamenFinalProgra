@@ -8,8 +8,8 @@ def carrera_nueva(request):
         formulario = CarreraForm(request.POST)
         if formulario.is_valid():
             carrera = Carrera.objects.create(nombre=formulario.cleaned_data['nombre'], descripcion=formulario.cleaned_data['descripcion'])
-            for alumno in request.POST.getlist('alumno'):
-                actuacion = Asignacion(alumno=alumno, asignacion = carrera.id)
+            for alum in request.POST.getlist('alumno'):
+                actuacion = Asignacion(alumno_id=alum, asignacion_id = carrera.id)
                 actuacion.save()
             messages.add_message(request, messages.SUCCESS, 'Asignaciòn realizad exitosamente')
 
