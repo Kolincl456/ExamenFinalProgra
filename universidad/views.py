@@ -1,20 +1,18 @@
 from django.shortcuts import render
-
 from django.contrib import messages
-from .forms import PeliculaForm
+from .forms import CarreraForm
 from universidad.models import Carrera, Asignacion
 
-
-def asignacion_nueva(request):
+def carrera_nueva(request):
     if request.method == "POST":
-        formulario = PeliculaForm(request.POST)
+        formulario = CarreraForm(request.POST)
         if formulario.is_valid():
-            pelicula = Carrera.objects.create(nombre=formulario.cleaned_data['nombre'])
-            for actor_id in request.POST.getlist('actores'):
-                actuacion = Asignacion(actor_id=actor_id, pelicula_id = pelicula.id)
+            carrera = Carrera.objects.create(nombre=formulario.cleaned_data['nombre'], descripcion=formulario.cleaned_data['descripcion'])
+            for alumno_id in request.POST.getlist('alumno'):
+                actuacion = Asignacion(alumno_id=alumno_id, carrera_id = carrera.id)
                 actuacion.save()
             messages.add_message(request, messages.SUCCESS, 'Asignaciòn realizad exitosamente')
 
     else:
-        formulario = PeliculaForm()
+        formulario = CarreraForm()
     return render(request, 'asignacion/asignacion_editar.html', {'formulario': formulario})
